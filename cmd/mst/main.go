@@ -23,6 +23,7 @@ func main() {
 
 	// Read lines, parse numbers and do maths
 	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Split(bufio.ScanWords)
 
 	for scanner.Scan() {
 		value, err := strconv.ParseFloat(scanner.Text(), 64)
