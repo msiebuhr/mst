@@ -43,7 +43,7 @@ func main() {
 	names := []string{
 		"min",
 		"q1",
-		"mean",
+		"median",
 		"q3",
 		"max",
 		"average",

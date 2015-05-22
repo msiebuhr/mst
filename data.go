@@ -15,9 +15,9 @@ var calculations map[string]func(Data) float64 = map[string]func(Data) float64{
 
 	"average": func(d Data) float64 { return d.sum / d.count },
 
-	"q1":   func(d Data) float64 { return d.Percentile(0.25) },
-	"mean": func(d Data) float64 { return d.Percentile(0.5) },
-	"q3":   func(d Data) float64 { return d.Percentile(0.75) },
+	"q1":     func(d Data) float64 { return d.Percentile(0.25) },
+	"median": func(d Data) float64 { return d.Percentile(0.5) },
+	"q3":     func(d Data) float64 { return d.Percentile(0.75) },
 }
 
 type Data struct {
