@@ -2,8 +2,8 @@ package main
 
 import (
 	"math"
-	"sync"
 	"sort"
+	"sync"
 )
 
 type Data struct {

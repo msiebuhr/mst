@@ -1,7 +1,8 @@
 package main
 
-import ("testing"
-"sort"
+import (
+	"sort"
+	"testing"
 )
 
 func TestSimple(t *testing.T) {
@@ -14,9 +15,9 @@ func TestSimple(t *testing.T) {
 	d.AddNumber(1)
 	d.Finalize()
 
-if !sort.Float64sAreSorted(d.data) {
-	t.Errorf("Expected data to be sorted after finalization - they are not: %v", d.data)
-}
+	if !sort.Float64sAreSorted(d.data) {
+		t.Errorf("Expected data to be sorted after finalization - they are not: %v", d.data)
+	}
 
 	if d.min != 1 {
 		t.Errorf("Expected min to be 1, got %f", d.min)
