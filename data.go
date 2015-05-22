@@ -1,10 +1,24 @@
-package main
+package mst
 
 import (
+	"fmt"
 	"math"
 	"sort"
 	"sync"
 )
+
+var calculations map[string]func(Data) float64 = map[string]func(Data) float64{
+	"min":   func(d Data) float64 { return d.min },
+	"max":   func(d Data) float64 { return d.max },
+	"sum":   func(d Data) float64 { return d.sum },
+	"count": func(d Data) float64 { return d.count },
+
+	"average": func(d Data) float64 { return d.sum / d.count },
+
+	"q1":   func(d Data) float64 { return d.Percentile(0.25) },
+	"mean": func(d Data) float64 { return d.Percentile(0.5) },
+	"q3":   func(d Data) float64 { return d.Percentile(0.75) },
+}
 
 type Data struct {
 	max   float64
@@ -44,7 +58,7 @@ func (d *Data) Finalize() {
 	sort.Float64s(d.data)
 }
 
-func (d *Data) in(in <-chan float64, wg *sync.WaitGroup) {
+func (d *Data) AddChan(in <-chan float64, wg *sync.WaitGroup) {
 	defer d.Finalize()
 	defer wg.Done()
 
@@ -60,4 +74,19 @@ func (d *Data) Average() float64 {
 func (d *Data) Percentile(which float64) float64 {
 	index := int(math.Trunc(float64(len(d.data)) * which))
 	return d.data[index]
+}
+
+func (d *Data) GetStatistics(what []string) (map[string]float64, error) {
+	out := make(map[string]float64, len(what))
+	for _, name := range what {
+		fun, ok := calculations[name]
+
+		if !ok {
+			return out, fmt.Errorf("Unknown stat `%s`", name)
+		}
+
+		out[name] = fun(*d)
+	}
+
+	return out, nil
 }

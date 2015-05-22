@@ -1,4 +1,4 @@
-package main
+package mst
 
 import (
 	"sort"

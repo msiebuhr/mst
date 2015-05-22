@@ -7,6 +7,8 @@ import (
 	"os"
 	"strconv"
 	"sync"
+
+	"github.com/msiebuhr/mst"
 )
 
 func main() {
@@ -15,9 +17,9 @@ func main() {
 
 	// Start go-routine to process numbers
 	ch := make(chan float64, 100)
-	data := NewData()
+	data := mst.NewData()
 	wg.Add(1)
-	go data.in(ch, &wg)
+	go data.AddChan(ch, &wg)
 
 	// Read lines, parse numbers and do maths
 	scanner := bufio.NewScanner(os.Stdin)
@@ -38,13 +40,25 @@ func main() {
 
 	wg.Wait()
 
+	names := []string{
+		"min",
+		"q1",
+		"mean",
+		"q3",
+		"max",
+		"average",
+		"sum",
+		"count",
+	}
+
 	// Write output data
-	fmt.Println("min", data.min)
-	fmt.Println("q1", data.Percentile(0.25))
-	fmt.Println("mean", data.Percentile(0.5))
-	fmt.Println("q3", data.Percentile(0.75))
-	fmt.Println("max", data.max)
-	fmt.Println("sum", data.sum)
-	fmt.Println("count", data.count)
-	fmt.Println("average", data.sum/data.count)
+	stats, err := data.GetStatistics(names)
+
+	if err != nil {
+		panic(err)
+	}
+
+	for _, name := range names {
+		fmt.Println(name, stats[name])
+	}
 }

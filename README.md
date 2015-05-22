@@ -1,7 +1,7 @@
 # mst
 Morten's Statistics Thing
 
-    go install github.com/msiebuhr/mst
+    go install github.com/msiebuhr/mst/cmd/mst
 
 Tired of doing ad-hoc AWK/shell/... scripts to do basic statistics on a set of numbers.
 
