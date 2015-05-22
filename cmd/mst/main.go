@@ -49,6 +49,7 @@ func main() {
 		"average",
 		"sum",
 		"count",
+		"stddev",
 	}
 
 	// Write output data

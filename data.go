@@ -18,12 +18,18 @@ var calculations map[string]func(Data) float64 = map[string]func(Data) float64{
 	"q1":     func(d Data) float64 { return d.Percentile(0.25) },
 	"median": func(d Data) float64 { return d.Percentile(0.5) },
 	"q3":     func(d Data) float64 { return d.Percentile(0.75) },
+
+	"stddev": func(d Data) float64 {
+		mean := d.sum / d.count
+		return math.Sqrt((d.sum_2 / d.count) - (mean * mean))
+	},
 }
 
 type Data struct {
 	max   float64
 	min   float64
 	sum   float64
+	sum_2 float64
 	count float64
 	data  []float64
 }
@@ -33,6 +39,7 @@ func NewData() Data {
 		max:   -1 * math.MaxFloat64,
 		min:   math.MaxFloat64,
 		sum:   0,
+		sum_2: 0,
 		count: 0,
 		data:  make([]float64, 0),
 	}
@@ -50,6 +57,7 @@ func (d *Data) AddNumber(n float64) {
 	}
 	d.count += 1
 	d.sum += n
+	d.sum_2 += n * n
 }
 
 // Do some optimization on data before marching on
