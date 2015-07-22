@@ -10,7 +10,7 @@ annoyance too many for me...
 
 ## Usage
 
-    > echo 1\\n2\\n2\\n4 | mst # Right now it's line-based; probably should split on words
+    > echo 1 2 2 4 | mst
     min 1
     q1 2
     mean 2
